@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+app.use("/", express.static("static"));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended:true}));
+const Schedule = require('./schedule.js');
 const router = express.Router();
 const port = 3000;
 
@@ -11,8 +15,6 @@ fs.readFile("./Lab3-timetable-data.json", "utf-8", (err, jsonString) => {
     console.log("Error Parsing JSON ", err);
   }
 });
-
-app.use("/", express.static("static"));
 
 app.use((req, res, next) => {
   console.log(`${req.method} request for ${req.url}`);
@@ -76,6 +78,27 @@ router
     }
   }
 })
+
+app.get('/api/schedule', (req,res)=>{
+    let schedules = Schedule.findAll();
+    console.log(schedules);
+       res.sendFile(__dirname + '/static/schedule.html');
+            });
+
+app.post('/api/addschedule', (req,res)=>{
+    let scheduleName = (req.body.scheduleName);
+    let subject = (req.body.subject);
+    let courseNumber = (req.body.courseNumber);
+    const sched = new Schedule(scheduleName, subject, courseNumber)
+    for(let i=0; i<data.length; i++){
+        if(data[i].subject==subject.toUpperCase() && data[i].catalog_nbr.toString()==courseNumber){
+            sched.save();
+        }
+    }
+    console.log(sched);
+    res.redirect('/')
+});
+
 
 
 app.use("/api/courses", router);
