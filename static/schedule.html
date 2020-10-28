@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Schedules Page</title>
 </head>
 <body>
-    <h1>Create Schedule</h1><br>
-    <form action="/api/addschedule" method="POST">
-        <input type="text" placeholder="Schedule Name" name="scheduleName"><br><br>
-        <input type="text" name="subject" id="subject_schedule" placeholder="Subject"><br><br>
-        <input type="text" name="courseNumber" id="courseNumber_schedule" placeholder="Course Number"><br><br>
-        <button type="submit">Add Schedule</button>
-    </form>
+    <h1>View Schedules</h1>
+    <div id="scheduleDiv">
+        <ol id="schedulesList">
+        </ol>
+    </div>
 
 </body>
 </html>

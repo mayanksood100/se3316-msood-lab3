@@ -4,9 +4,8 @@ let coursesTable = document.getElementById("coursesTable");
 let subjectInput = document.getElementById("subject");
 let courseNumberInput = document.getElementById("courseNumber");
 let componentInput = document.getElementById("courseComponent");
-let scheduleName = document.getElementById("scheduleName");
-let subject_schedule = document.getElementById("subject_schedule");
-let courseNumber_schedule = document.getElementById("courseNumber_schedule");
+let viewScheduleButton = document.getElementById("viewScheduleButton");
+let addScheduleButton = document.getElementById("addScheduleButton");
 
 coursesButton.addEventListener("click", getCourses);
 
@@ -125,14 +124,13 @@ function getCourses() {
         tableDiv.appendChild(longDescription);
         tableDiv.appendChild(tbl);
 
-        if(data[i].course_info[0].ssr_component=="TUT"){
-          tbl.style.color="red";
-        };
+        if (data[i].course_info[0].ssr_component == "TUT") {
+          tbl.style.color = "red";
+        }
 
-        if(data[i].course_info[0].ssr_component=="LAB"){
-          tbl.style.color="blue";
-        };
-
+        if (data[i].course_info[0].ssr_component == "LAB") {
+          tbl.style.color = "blue";
+        }
       }
     })
   );
@@ -257,14 +255,13 @@ function getSubjects() {
         tableDiv.appendChild(longDescription);
         tableDiv.appendChild(tbl);
 
-        if(data[i].course_info[0].ssr_component=="TUT"){
-          tbl.style.color="red";
-        };
-        
-        if(data[i].course_info[0].ssr_component=="LAB"){
-          tbl.style.color="blue";
-        };
+        if (data[i].course_info[0].ssr_component == "TUT") {
+          tbl.style.color = "red";
+        }
 
+        if (data[i].course_info[0].ssr_component == "LAB") {
+          tbl.style.color = "blue";
+        }
       }
     })
   );
@@ -398,14 +395,13 @@ function getCourseCodes() {
           tableDiv.appendChild(longDescription);
           tableDiv.appendChild(tbl);
 
-          if(data[i].course_info[0].ssr_component=="TUT"){
-            tbl.style.color="red";
-          };
-          
-          if(data[i].course_info[0].ssr_component=="LAB"){
-            tbl.style.color="blue";
-          };
+          if (data[i].course_info[0].ssr_component == "TUT") {
+            tbl.style.color = "red";
+          }
 
+          if (data[i].course_info[0].ssr_component == "LAB") {
+            tbl.style.color = "blue";
+          }
         }
       })
   );
@@ -540,28 +536,58 @@ function getCourseComponent() {
         tableDiv.appendChild(longDescription);
         tableDiv.appendChild(tbl);
 
-        if(data[i].course_info[0].ssr_component=="TUT"){
-          tbl.style.color="red";
-        };
-        
-        if(data[i].course_info[0].ssr_component=="LAB"){
-          tbl.style.color="blue";
-        };
+        if (data[i].course_info[0].ssr_component == "TUT") {
+          tbl.style.color = "red";
+        }
 
+        if (data[i].course_info[0].ssr_component == "LAB") {
+          tbl.style.color = "blue";
+        }
       }
     })
   );
 }
 
-document.getElementById('viewSchedules').addEventListener('click', getSchedules);
+viewScheduleButton.addEventListener('click', getSchedules);
 
-function getSchedules(){
-    fetch("/api/schedule").then((res) =>
+function getSchedules() {
+  fetch("/api/schedule").then((res) => {
     res.json().then((data) => {
-        console.log(data);
-        console.log(scheduleName.value);
-        console.log(subject_schedule.value);
-        console.log(courseNumber_schedule.value);
+      console.log(data);
+      let schedulesDiv = document.getElementById("schedulesDiv");
+      let ol = document.getElementById("orderedList");
+      data.forEach(e=>{
+        let item = document.createElement("li");
+        item.appendChild(document.createTextNode(`${e.scheduleName}: ${e.subject_schedule}-${e.courseNumber_schedule}`));
+        ol.appendChild(item);
+        schedulesDiv.appendChild(ol);
+      })
+    });
+  });
+}
+
+addScheduleButton.addEventListener("click", addSchedules);
+
+function addSchedules() {
+  const newSchedule = {
+    scheduleName: document.getElementById("scheduleName").value,
+    subject_schedule: document.getElementById("subject_schedule").value,
+    courseNumber_schedule: document.getElementById("courseNumber_schedule")
+      .value,
+  };
+
+  fetch("/api/addschedule", {
+    method: "POST",
+    body: JSON.stringify(newSchedule),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => {
+      res
+        .json()
+        .then((data) => {
+          console.log(data);
+        })
+        .catch(console.log("Failed to get Json Object"));
     })
-    );
+    .catch();
 }

@@ -37,8 +37,24 @@
             <button id="search3">Search All</button>
         </div>
 
-            <button id="viewSchedules">View Schedules</button>
-    
+            <br><br>
+
+            <div id="scheduleDiv">
+                <h1>Create Schedule</h1><br>
+
+                <input type="text" placeholder="Schedule Name" name="scheduleName" id="scheduleName"><br><br>
+                <input type="text" name="subject" id="subject_schedule" placeholder="Subject"><br><br>
+                <input type="text" name="courseNumber" id="courseNumber_schedule" placeholder="Course Number"><br><br>
+                <button id="addScheduleButton">Add Schedule</button>
+                <button id="viewScheduleButton">View Schedules</button>
+            </div>
+
+
+            <div id="schedulesDiv">
+                <ol id="orderedList"></ol>
+            </div>
+
+           
     <div id="introDiv">
         <h2>Click the button to retrieve the list of courses offered at Western University</h2>
         <button id="coursesButton">Get Courses</button>

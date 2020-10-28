@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 app.use("/", express.static("static"));
+app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
 const Schedule = require('./schedule.js');
@@ -79,24 +80,26 @@ router
   }
 })
 
+
+const allSchedules = [];
+
 app.get('/api/schedule', (req,res)=>{
-    let schedules = Schedule.findAll();
-    console.log(schedules);
-       res.sendFile(__dirname + '/static/schedule.html');
-            });
+  res.send(allSchedules);
+          });
 
 app.post('/api/addschedule', (req,res)=>{
-    let scheduleName = (req.body.scheduleName);
-    let subject = (req.body.subject);
-    let courseNumber = (req.body.courseNumber);
-    const sched = new Schedule(scheduleName, subject, courseNumber)
-    for(let i=0; i<data.length; i++){
-        if(data[i].subject==subject.toUpperCase() && data[i].catalog_nbr.toString()==courseNumber){
-            sched.save();
-        }
-    }
-    console.log(sched);
-    res.redirect('/')
+    const newSchedule = req.body;
+    console.log(newSchedule);
+   if(newSchedule.scheduleName){
+    allSchedules.push(newSchedule);
+    res.send(newSchedule);
+   }
+   else{
+     res.status(400).send("Missing Name");
+   }
+     
+    
+    
 });
 
 
