@@ -21,12 +21,16 @@ app.use((req, res, next) => {
 
 router.use(express.json());
 
+
+//Setting up the route for '/api/courses'
 router
   .route("/")
   .get((req, res) => {
     res.send(data);
   })
 
+
+//Setting up the route for '/api/courses/:subject' so user can search for course by just Subject.
 router
   .route("/:subject")
   .get((req, res) => {
@@ -40,10 +44,38 @@ router
     }
   })
 
+//Setting up the route for '/api/courses/:subject/:catalog_nbr'  so user can search for course by subject+courseCode.
+router
+  .route("/:subject/:catalog_nbr")
+  .get((req, res) => {
+    let subject = data.filter((c) => c.subject == req.params.subject);
+    let catalogNbr = subject.filter(c => c.catalog_nbr==(req.params.catalog_nbr));
+    for (let i = 0; i < catalogNbr.length; i++) {
+      if (catalogNbr) {
+        res.send(catalogNbr);
+      } else {
+        res.status(404).send(`Course Number ${catalogNbr} was not found`);
+      }
+    }
+  })
 
-router.get("/", (req, res) => {
-  res.send(data);
-});
+
+//Setting up the route for '/api/courses/:subject/:catalog_nbr/:courseComponent'  so user can search for course by all 3 things
+router
+.route("/:subject/:catalog_nbr/:courseComponent")
+.get((req, res) => {
+    let subject = data.filter((c) => c.subject == req.params.subject);
+    let catalogNbr = subject.filter(c => c.catalog_nbr==(req.params.catalog_nbr));
+    let courseComponent = catalogNbr.filter(c=> c.course_info[0].ssr_component == req.params.courseComponent);
+
+  for (let i = 0; i < courseComponent.length; i++) {
+    if (courseComponent) {
+      res.send(courseComponent);
+    } else {
+      res.status(404).send(`The course was not found`);
+    }
+  }
+})
 
 
 app.use("/api/courses", router);

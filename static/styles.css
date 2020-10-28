@@ -1,25 +1,45 @@
-h1 {
-   margin: 0 auto;
+h1{
+    color: red;
+    text-decoration: underline;
+    margin: 0 auto;
 }
 
-#undergraduate{
-    color: black;
-    font-weight: 700;
-    font-size: 40px;
-    margin: 0 auto;
-    padding: 0;
+#titleDiv {
+    background-color: #c9c9c9;
+    width: 100%;
+    padding: 0%;
+    white-space: nowrap;
 }
 
 img{
-    width: 20%;
-    height: 20%;
+    vertical-align: middle;
 }
 
-#fallWinter{
-    color: #999999;
-    font-size: 18px;
+#form, form{
+    justify-content: center;
+    align-items: center;
     margin: 0 auto;
-    padding: 0;
+    background-color: white;
+}
+
+label{
+    color: black;
+    font-size: larger;
+   font-weight: bold;
+}
+
+input{
+    margin-left: 40px;
+}
+
+#subject{
+    margin-left: 105px;
+}
+
+#courseComponent{
+    margin-left: 15px;
+    width: 164.8;
+    height: 22;
 }
 
 table, #coursesTables {

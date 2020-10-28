@@ -7,8 +7,36 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    
-        <h1><img src="./western_logo.jpg" alt=""> <span id="undergraduate"> Undergraduate </span> <span id="fallWinter">Fall/Winter Academic Timetable 2020/2021 </span></h1>
+
+    <div id="titleDiv">
+        <img src="./western_logo.jpg" alt="">  
+        <h2>Undergraduate  Fall/Winter Academic Timetable 2020/2021</h2>
+    </div>
+
+    <h1>Timetable Search</h1>
+        <!-- <h1><img src="./western_logo.jpg" alt=""> <span id="undergraduate"> Undergraduate </span> <span id="fallWinter">Fall/Winter Academic Timetable 2020/2021 </span></h1> -->
+        <br>
+        <br>
+
+        <div id="form">
+            <form>
+                <label for="subject">Search by Subject</label>
+                <input type="text" name="subject" id="subject" placeholder="Subject"><br><br>
+                <label for="courseNumber">Search by Course Number</label>
+                <input type="text" name="courseNumber" id="courseNumber" placeholder="Course Number"><br><br>
+                <label for="courseComponent">Search by Course Component</label>
+                <select name="courseComponent" id="courseComponent">
+                    <option value="">Select Component</option> 
+                    <option value="LEC">LEC</option>
+                    <option value="TUT">TUT</option>
+                    <option value="LAB">LAB</option>
+                  </select>
+                  <br><br>
+            </form>
+            <button id="search">Search Subject</button>
+            <button id="search2">Search Subject+CourseCode</button>
+            <button id="search3">Search All</button>
+        </div>
     
     <div id="introDiv">
         <h2>Click the button to retrieve the list of courses offered at Western University</h2>
