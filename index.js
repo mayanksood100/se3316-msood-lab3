@@ -87,13 +87,31 @@ app.get('/api/schedule', (req,res)=>{
           });
 
 app.post('/api/addschedule', (req,res)=>{
+  let subjects_data = [];
+  let courseNums_data = [];
+  for(let i=0; i<data.length; i++){
+    subjects_data.push(data[i].subject)
+    courseNums_data.push(data[i].catalog_nbr);
+  }
+  
     const newSchedule = req.body;
-    let index = allSchedules.findIndex(x=>x.scheduleName==newSchedule.scheduleName)
+    let nameIndex = allSchedules.findIndex(x=>x.scheduleName==newSchedule.scheduleName);
+    let subjectIndex = subjects_data.findIndex(y=>y==newSchedule.subject_schedule.toUpperCase());
+    let courseNumberIndex = courseNums_data.findIndex(z=>z==newSchedule.courseNumber_schedule);
+    console.log(subjectIndex);
     console.log(newSchedule);
-   if(newSchedule.scheduleName && index===-1){
+
+   if(newSchedule.scheduleName && nameIndex===-1 && subjectIndex!==-1 && courseNumberIndex!==-1){
     allSchedules.push(newSchedule);
     res.send(newSchedule);
    }
+   else if(subjectIndex===-1){
+     console.log("Invalid Subject. This subject is not offered at Western University");
+   }
+   else if(courseNumberIndex===-1){
+    console.log("Invalid Course Number");
+   }
+   
    else{
      res.status(400).send("Missing Name/Name already exists");
    }

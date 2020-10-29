@@ -586,11 +586,13 @@ function addSchedules() {
         .then((data) => {
           console.log(data);
           getSchedules();
+          document.getElementById('status').innerText = (`Successfuly added the Schedule`);
         })
         .catch(err=>console.log("Failed to get Json Object"));
       }
       else{
         console.log('Error:', res.status);
+        document.getElementById('status').innerText = (`Failed to add the Schedule`);
       }
     })
     .catch();
