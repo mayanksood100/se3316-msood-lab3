@@ -88,8 +88,9 @@ app.get('/api/schedule', (req,res)=>{
 
 app.post('/api/addschedule', (req,res)=>{
     const newSchedule = req.body;
+    let index = allSchedules.findIndex(x=>x.scheduleName==newSchedule.scheduleName)
     console.log(newSchedule);
-   if(newSchedule.scheduleName){
+   if(newSchedule.scheduleName && index===-1){
     allSchedules.push(newSchedule);
     res.send(newSchedule);
    }
