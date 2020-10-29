@@ -548,8 +548,6 @@ function getCourseComponent() {
   );
 }
 
-viewScheduleButton.addEventListener('click', getSchedules);
-
 function getSchedules() {
   fetch("/api/schedule").then((res) => {
     res.json().then((data) => {
@@ -558,7 +556,7 @@ function getSchedules() {
       let ol = document.getElementById("orderedList");
       data.forEach(e=>{
         let item = document.createElement("li");
-        item.appendChild(document.createTextNode(`${e.scheduleName}: ${e.subject_schedule}-${e.courseNumber_schedule}`));
+        item.appendChild(document.createTextNode(`${e.scheduleName}: ${e.subject_schedule.toUpperCase()}-${e.courseNumber_schedule}`));
         ol.appendChild(item);
         schedulesDiv.appendChild(ol);
       })
@@ -582,12 +580,22 @@ function addSchedules() {
     headers: { "Content-Type": "application/json" },
   })
     .then((res) => {
+      if(res.ok){
       res
         .json()
         .then((data) => {
           console.log(data);
+          getSchedules();
         })
-        .catch(console.log("Failed to get Json Object"));
+        .catch(err=>console.log("Failed to get Json Object"));
+      }
+      else{
+        console.log('Error:', res.status);
+      }
     })
     .catch();
+
+    document.getElementById("scheduleName").value="";
+    document.getElementById("subject_schedule").value="";
+    document.getElementById("courseNumber_schedule").value="";
 }

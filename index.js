@@ -5,7 +5,6 @@ app.use("/", express.static("static"));
 app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:true}));
-const Schedule = require('./schedule.js');
 const router = express.Router();
 const port = 3000;
 
@@ -95,10 +94,8 @@ app.post('/api/addschedule', (req,res)=>{
     res.send(newSchedule);
    }
    else{
-     res.status(400).send("Missing Name");
+     res.status(400).send("Missing Name/Name already exists");
    }
-     
-    
     
 });
 
