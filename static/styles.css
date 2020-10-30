@@ -4,6 +4,10 @@ h1{
     margin: 0 auto;
 }
 
+#createTitle, #deleteTitle{
+    text-align: center;
+}
+
 #titleDiv {
     background-color: #c9c9c9;
     width: 100%;
@@ -77,4 +81,85 @@ td, #tableData {
     vertical-align: top;
     border: 1px solid black;
     border-top: 1px solid #dddddd;
+}
+
+#mainScheduleDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;              
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#createSchedulesDiv, #editScheduleDiv{
+    float: left;
+    width: max-content;
+    padding: 20px;
+    border: 1.5px solid black;
+    background-color: #23BB70;
+}
+
+#deleteSchedulesDiv{
+    float: right;
+    width: max-content;
+    padding: 20px;
+    border: 1.5px solid black;
+    background-color: #0FC6EC;
+    height: 218px;
+    margin-top: 0;
+}
+
+#schedulesDiv{
+    border-radius: 25px;
+    border: 2px solid black;
+    background-color: #9868F0;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+    width: max-content;
+}
+
+#status{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#divTitle{
+    text-decoration: underline;
+    color: #000000;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+}
+
+#addScheduleButton{
+    margin-left: 220px;
+}
+
+#deleteScheduleButton{
+    margin-left: 300px;
+}
+
+#deleteAll{
+    background-color: red;
+    font-size: larger;
+    font-weight: bolder;
+    margin-left: 150px;
+}
+
+#deleteScheduleName{
+    width:150px;
+}
+
+#subject_schedule{
+    margin-left: 105px;
+}
+
+#courseNumber_schedule{
+    margin-left: 35px;
+}
+
+#numberOfCourses{
+    margin-left: 66px;
 }

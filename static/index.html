@@ -35,33 +35,61 @@
             <button id="search">Search Subject</button>
             <button id="search2">Search Subject+CourseCode</button>
             <button id="search3">Search All</button>
+            <button id="coursesButton">View All Courses</button>
         </div>
 
             <br><br>
 
-            <div id="scheduleDiv">
-                <h1>Create Schedule</h1><br>
+            <div id="mainScheduleDiv">
 
+            <div id="createSchedulesDiv">
+                <h1 id="createTitle">Create Schedule</h1><br>
+                <label for="numberofCourses">Enter # of Courses</label>
+                <input type="number" placeholder="Enter Number" id="numberOfCourses" name="numberofCourses"><br><br>
+                <label for="scheduleName">Enter Schedule Name</label>
                 <input type="text" placeholder="Schedule Name" name="scheduleName" id="scheduleName"><br><br>
-                <input type="text" name="subject" id="subject_schedule" placeholder="Subject"><br><br>
-                <input type="text" name="courseNumber" id="courseNumber_schedule" placeholder="Course Number"><br><br>
+                <label for="subject_schedule">Enter Subject</label>
+                <input type="text" name="subject_schedule" id="subject_schedule" placeholder="Subject"><br><br>
+                <label for="courseNumber_schedule">Enter Course Number</label>
+                <input type="text" name="courseNumber_schedule" id="courseNumber_schedule" placeholder="Course Number"><br><br>
                 <button id="addScheduleButton">Add Schedule</button>
             </div>
-
+                
             <div id="schedulesDiv">
                 <span><h3 id="status"></h3></span>
+                <h2 id="divTitle">List of Schedules</h2>
                 <ol id="orderedList"></ol>
             </div>
-
            
-    <div id="introDiv">
-        <h2>Click the button to retrieve the list of courses offered at Western University</h2>
-        <button id="coursesButton">Get Courses</button>
+                <div id="deleteSchedulesDiv">
+                    <h1 id="deleteTitle">Delete Schedule(s)</h1><br>
+                    <label for="deleteScheduleName">Enter Schedule Name to Delete</label>
+                    <input type="text" placeholder="Schedule Name" id="deleteScheduleName" name="deleteScheduleName"><br><br>
+                    <button id="deleteScheduleButton">Delete Schedule</button><br><br>
+                    <button id="deleteAll">Delete All Schedules</button>
+                    <span><h4 id="deleteStatus"></h4></span>
+                </div>
+            </div>
+
+            <br><br><br>
+
+            <div id="editScheduleDiv">
+            <h1 id="editTitle">Edit Schedule</h1><br>
+            <label for="editScheduleName">Enter Schedule Name to Edit</label>
+            <input type="text" placeholder="Schedule Name" name="editScheduleName" id="editScheduleName"><br><br>
+            <label for="edit_subject_schedule">Enter Subject</label>
+            <input type="text" name="edit_subject_schedule" id="edit_subject_schedule" placeholder="Subject"><br><br>
+            <label for="edit_courseNumber_schedule">Enter Course Number</label>
+            <input type="text" name="edit_courseNumber_schedule" id="edit_courseNumber_schedule" placeholder="Course Number"><br><br>
+            <button id="editScheduleButton">Edit Schedule</button>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+        <div id="introDiv">
 
         <div id="tableDiv">
         </div>
-
-    </div>
+        </div>
 
     <script defer src="script.js"></script>
 </body>
