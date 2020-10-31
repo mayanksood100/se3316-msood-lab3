@@ -4,6 +4,7 @@ let coursesTable = document.getElementById("coursesTable");
 let subjectInput = document.getElementById("subject");
 let courseNumberInput = document.getElementById("courseNumber");
 let componentInput = document.getElementById("courseComponent");
+let schedulesDiv = document.getElementById("schedulesDiv");
 let addScheduleButton = document.getElementById("addScheduleButton");
 let deleteScheduleButton = document.getElementById("deleteScheduleButton");
 let deleteAll = document.getElementById('deleteAll');
@@ -146,6 +147,10 @@ function removeItems(){
   while (tableDiv.firstChild) {
     tableDiv.removeChild(tableDiv.lastChild);
   }
+}
+function clearSchedulesDiv(){
+    let schedulesDiv = document.getElementById('schedulesDiv');
+      schedulesDiv.lastChild.innerText="";
 }
 
 document.getElementById("search").addEventListener("click", getSubjects);
@@ -294,7 +299,7 @@ function getCourseCodes() {
     removeItems();
     }
 
-  fetch(`api/courses/${subjectInput.value.toUpperCase()}/${courseNumberInput.value}`).then(
+  fetch(`/api/courses/${subjectInput.value.toUpperCase()}/${courseNumberInput.value}`).then(
     (res) =>
       res.json().then((data) => {
         console.log(res.status);
@@ -445,7 +450,7 @@ function getCourseComponent() {
     }
 
   fetch(
-    `api/courses/${subjectInput.value.toUpperCase()}/${courseNumberInput.value.toString()}/${componentInput.value}`
+    `/api/courses/${subjectInput.value.toUpperCase()}/${courseNumberInput.value.toString()}/${componentInput.value}`
   ).then((res) =>
     res.json().then((data) => {
       console.log(res.status);
@@ -585,13 +590,15 @@ function getCourseComponent() {
 document.getElementById("numberButton").addEventListener('click', makeInputs);
 let subjects_db=[];
 let courseNumber_db=[];
+let newSubject;
+let newCourseNumber;
 
 function makeInputs(){
   
   for(let i=1; i<=numberOfCourses.value; i++){
    
-    let newSubject = document.createElement("input");
-    let newCourseNumber = document.createElement("input");
+    newSubject = document.createElement("input");
+    newCourseNumber = document.createElement("input");
     newSubject.setAttribute("type", "text");
     newCourseNumber.setAttribute("type", "text");
     newSubject.setAttribute("placeholder", " Subject "+ i);
@@ -600,6 +607,7 @@ function makeInputs(){
     newCourseNumber.setAttribute("id", "courseNumber_schedule"+i);
     document.getElementById('dynamicInputs').appendChild(newSubject);
     document.getElementById('dynamicInputs').appendChild(newCourseNumber);
+    
   }
 }
 
@@ -621,6 +629,11 @@ function getSchedules() {
 
 addScheduleButton.addEventListener("click", addSchedules);
 function addSchedules() {
+
+  if(schedulesDiv.hasChildNodes){
+    clearSchedulesDiv();
+  }
+
   const newSchedule = {
     scheduleName: document.getElementById("scheduleName").value,
     subject_schedule: document.getElementById("subject_schedule").value,
@@ -654,9 +667,10 @@ function addSchedules() {
     document.getElementById("subject_schedule").value="";
     document.getElementById("courseNumber_schedule").value="";
 
-    for(let i=0; i<numberOfCourses.value;i++){
-      subjects_db.push(newSubject.value);
-      courseNumber_db.push(newCourseNumber.value);
+    
+    for(let i=1; i<=numberOfCourses.value;i++){
+      subjects_db.push(document.getElementById(`subject_schedule${[i]}`.value));
+      courseNumber_db.push(document.getElementById(`courseNumber_schedule${[i]}`.value));
     }
     console.log(subjects_db);
     console.log(courseNumber_db);
@@ -685,6 +699,11 @@ function deleteSchedules(){
 
 deleteScheduleButton.addEventListener('click', deleteScheduleByName);
 function deleteScheduleByName(){
+
+    if(schedulesDiv.hasChildNodes){
+      clearSchedulesDiv();
+    }
+
   const deleteSched = {
     deleteScheduleName: document.getElementById("deleteScheduleName").value,
   };
@@ -709,7 +728,6 @@ function deleteScheduleByName(){
     console.log('Error:', res.status);
     document.getElementById('deleteStatus').innerText = (`Failed to delete the Schedule  "${deleteSched.deleteScheduleName}"`);
     }
-
     document.getElementById("deleteScheduleName").value="";
 
 });
