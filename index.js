@@ -35,13 +35,14 @@ router.route("/").get((req, res) => {
 //Setting up the route for '/api/courses/:subject' so user can search for course by just Subject.
 router.route("/:subject").get((req, res) => {
   let subject = data.filter((c) => c.subject == req.params.subject);
-  for (let i = 0; i < subject.length; i++) {
-    if (subject) {
-      console.log(subject[0].subject);
+  
+    if (subject.length>0) {
       res.send(subject);
     } 
-  }
-  res.status(404).send(`Subject ${subject} was not found`);
+    else{
+      res.status(404).send(`Subject ${req.params.subject} was not found`);
+    }
+ 
 });
 
 //Setting up the route for '/api/courses/:subject/:catalog_nbr'  so user can search for course by subject+courseCode.
@@ -50,12 +51,14 @@ router.route("/:subject/:catalog_nbr").get((req, res) => {
   let catalogNbr = subject.filter(
     (c) => c.catalog_nbr.toString() == req.params.catalog_nbr
   );
-  for (let i = 0; i < catalogNbr.length; i++) {
-    if (catalogNbr) {
+ 
+    if (catalogNbr.length>0) {
       res.send(catalogNbr);
     } 
-  }
-  res.status(404).send(`Course Number ${catalogNbr} was not found`);
+    else{
+      res.status(404).send(`Course Number ${req.params.catalog_nbr} was not found`);
+    }
+  
 });
 
 //Setting up the route for '/api/courses/:subject/:catalog_nbr/:courseComponent'  so user can search for course by all 3 things
@@ -68,12 +71,14 @@ router.route("/:subject/:catalog_nbr/:courseComponent").get((req, res) => {
     (c) => c.course_info[0].ssr_component == req.params.courseComponent
   );
 
-  for (let i = 0; i < courseComponent.length; i++) {
-    if (courseComponent) {
+    if (courseComponent.length>0) {
       res.send(courseComponent);
     } 
-  }
-  res.status(404).send(`The course was not found`);
+
+    else{
+      res.status(404).send(`The course was not found`);
+    }
+ 
 });
 
 //Retrieving all Schedules from the Database
@@ -113,22 +118,23 @@ app.post("/api/schedule", (req, res, next) => {
     courseNums_data.push(data[i].catalog_nbr);
   }
 
-   let subjectIndex = subjects_data.findIndex(
-    (y) => y == req.body.subject_schedule.toUpperCase()
-  );
-  let courseNumberIndex = courseNums_data.findIndex(
-    (z) => z == req.body.courseNumber_schedule
-  );
+  //  let subjectIndex = subjects_data.findIndex(
+  //   (y) => y == req.body.subject_schedule.toUpperCase()
+  // );
+  // let courseNumberIndex = courseNums_data.findIndex(
+  //   (z) => z == req.body.courseNumber_schedule
+  // );
 
   let schedule = new Schedule(
     {
       scheduleName:req.body.scheduleName,
       subject_schedule: req.body.subject_schedule,
-      courseNumber_schedule:req.body.courseNumber_schedule
     }
   );
-
-     if (subjectIndex !== -1 && courseNumberIndex !== -1) {
+    console.log(req.body.scheduleName);
+    console.log(req.body.subject_schedule);
+    
+    //  if (subjectIndex !== -1 && courseNumberIndex !== -1) {
         schedule.save(function (err) {
         if (err) {
             return console.error(err);
@@ -138,15 +144,15 @@ app.post("/api/schedule", (req, res, next) => {
           console.log('Schedule Created Sucessfully');
           }
       });
-        }
+        // }
 
-      else if (subjectIndex === -1) {
-      console.log("Invalid Subject. This subject is not offered at Western University");
-        }
+      // else if (subjectIndex === -1) {
+      // console.log("Invalid Subject. This subject is not offered at Western University");
+      //   }
 
-      else if (courseNumberIndex === -1) {
-        console.log("Invalid Course Number");
-          } 
+      // else if (courseNumberIndex === -1) {
+      //   console.log("Invalid Course Number");
+      //     } 
 });
 
 //Creating a Put request to update the Schedule by its Name.

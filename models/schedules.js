@@ -12,10 +12,6 @@ const SchedulesSchema = new Schema({
     subject_schedule:{
         type: Array
     },
-
-    courseNumber_schedule:{
-        type:Array
-    }
 });
 
 const Schedule = mongoose.model('schedule', SchedulesSchema);

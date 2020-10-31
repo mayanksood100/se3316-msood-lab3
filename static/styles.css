@@ -100,11 +100,12 @@ td, #tableData {
     background-color: #23BB70;
 }
 
-#dynamicInputs{
+#dynamicInputs, #editDynamicInputs{
     width:max-content;
     display: flex;
     flex-direction: column;
     padding: 10px;
+    margin-left:173px;
     
 }
 
@@ -149,6 +150,10 @@ td, #tableData {
     margin-left: 300px;
 }
 
+#editScheduleButton{
+    margin-left: 285px;
+}
+
 #deleteAll{
     background-color: red;
     font-size: larger;
@@ -170,4 +175,8 @@ td, #tableData {
 
 #numberOfCourses{
     margin-left: 66px;
+}
+
+#editTitle{
+    text-align: center;
 }
