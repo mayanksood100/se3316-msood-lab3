@@ -7,7 +7,6 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 const router = express.Router();
 const port = 3000;
-
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/schedulesdb");
 mongoose.Promise = global.Promise;
@@ -38,11 +37,11 @@ router.route("/:subject").get((req, res) => {
   let subject = data.filter((c) => c.subject == req.params.subject);
   for (let i = 0; i < subject.length; i++) {
     if (subject) {
+      console.log(subject[0].subject);
       res.send(subject);
-    } else {
-      res.status(404).send(`Subject ${subject} was not found`);
-    }
+    } 
   }
+  res.status(404).send(`Subject ${subject} was not found`);
 });
 
 //Setting up the route for '/api/courses/:subject/:catalog_nbr'  so user can search for course by subject+courseCode.
@@ -54,10 +53,9 @@ router.route("/:subject/:catalog_nbr").get((req, res) => {
   for (let i = 0; i < catalogNbr.length; i++) {
     if (catalogNbr) {
       res.send(catalogNbr);
-    } else {
-      res.status(404).send(`Course Number ${catalogNbr} was not found`);
-    }
+    } 
   }
+  res.status(404).send(`Course Number ${catalogNbr} was not found`);
 });
 
 //Setting up the route for '/api/courses/:subject/:catalog_nbr/:courseComponent'  so user can search for course by all 3 things
@@ -73,10 +71,9 @@ router.route("/:subject/:catalog_nbr/:courseComponent").get((req, res) => {
   for (let i = 0; i < courseComponent.length; i++) {
     if (courseComponent) {
       res.send(courseComponent);
-    } else {
-      res.status(404).send(`The course was not found`);
-    }
+    } 
   }
+  res.status(404).send(`The course was not found`);
 });
 
 //Retrieving all Schedules from the Database

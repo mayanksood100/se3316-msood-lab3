@@ -10,11 +10,11 @@ const SchedulesSchema = new Schema({
     },
 
     subject_schedule:{
-        type: String
+        type: Array
     },
 
     courseNumber_schedule:{
-        type:String
+        type:Array
     }
 });
 

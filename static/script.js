@@ -156,7 +156,7 @@ function getSubjects() {
   removeItems();
   }
 
-  fetch(`api/courses/${subjectInput.value.toUpperCase()}`).then((res) =>
+  fetch(`/api/courses/${subjectInput.value.toUpperCase()}`).then((res) =>
     res.json().then((data) => {
       let subject = data.filter(
         (c) => c.subject == subjectInput.value.toUpperCase()
@@ -582,6 +582,27 @@ function getCourseComponent() {
   );
 }
 
+document.getElementById("numberButton").addEventListener('click', makeInputs);
+let subjects_db=[];
+let courseNumber_db=[];
+
+function makeInputs(){
+  
+  for(let i=1; i<=numberOfCourses.value; i++){
+   
+    let newSubject = document.createElement("input");
+    let newCourseNumber = document.createElement("input");
+    newSubject.setAttribute("type", "text");
+    newCourseNumber.setAttribute("type", "text");
+    newSubject.setAttribute("placeholder", " Subject "+ i);
+    newCourseNumber.setAttribute("placeholder", " Course Number " + i);
+    newSubject.setAttribute("id", "subject_schedule"+i);
+    newCourseNumber.setAttribute("id", "courseNumber_schedule"+i);
+    document.getElementById('dynamicInputs').appendChild(newSubject);
+    document.getElementById('dynamicInputs').appendChild(newCourseNumber);
+  }
+}
+
 function getSchedules() {
   fetch("/api/schedule").then((res) => {
     res.json().then((data) => {
@@ -590,7 +611,7 @@ function getSchedules() {
       let ol = document.getElementById("orderedList");
       data.forEach(e=>{
         let item = document.createElement("li");
-        item.appendChild(document.createTextNode(`${e.scheduleName}: ${e.subject_schedule.toUpperCase()}-${e.courseNumber_schedule}`));
+        item.appendChild(document.createTextNode(`${e.scheduleName}: ${e.subject_schedule}-${e.courseNumber_schedule}`));
         ol.appendChild(item);
         schedulesDiv.appendChild(ol);
       })
@@ -632,6 +653,13 @@ function addSchedules() {
     document.getElementById("scheduleName").value="";
     document.getElementById("subject_schedule").value="";
     document.getElementById("courseNumber_schedule").value="";
+
+    for(let i=0; i<numberOfCourses.value;i++){
+      subjects_db.push(newSubject.value);
+      courseNumber_db.push(newCourseNumber.value);
+    }
+    console.log(subjects_db);
+    console.log(courseNumber_db);
 }
 
 deleteAll.addEventListener('click', deleteSchedules);
@@ -725,12 +753,3 @@ function editSchedule(){
 
 
 
-// numberOfCourses.addEventListener('keyup', function(e){
-//   for(let i=0; i<numberOfCourses.value.length; i++){
-//     let newSubject = document.createElement("input");
-//     newSubject.setAttribute("type", "text");
-//     newSubject.setAttribute("placeholder", "Subject"+ i);
-//     newSubject.setAttribute("id", "subject"+i);
-//     document.getElementById('createSchedulesDiv').appendChild(newSubject);
-//   }
-// });
