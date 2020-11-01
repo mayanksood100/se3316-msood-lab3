@@ -798,7 +798,7 @@ function confirmEdit(){
           document.getElementById('editDynamicInputs').appendChild(editCourseNumber);
         }
       }
-      else{
+      else {
         console.log("No it doesn't match");
       }
     

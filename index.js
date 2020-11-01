@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const Joi = require('joi');
+const expressSanitizer = require('express-sanitizer');
 app.use("/", express.static("static"));
 app.use(express.json());
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSanitizer());
 const router = express.Router();
 const port = 3000;
 const mongoose = require("mongoose");
@@ -126,6 +128,7 @@ app.post("/api/schedule", (req, res, next) => {
     }
   );
 
+
     console.log(req.body.scheduleName);
     console.log(req.body.subject_schedule);
  
@@ -146,7 +149,6 @@ app.put('/api/schedule/:sched_name', function(req,res,next){
   Schedule.findOneAndUpdate({scheduleName: req.params.sched_name},req.body).then(function(){
     Schedule.findOne({scheduleName: req.params.sched_name}).then(function(schedule){
       res.send(schedule);
-
     });
   });
 
