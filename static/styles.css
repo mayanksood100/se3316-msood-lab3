@@ -4,7 +4,7 @@ h1{
     margin: 0 auto;
 }
 
-#createTitle, #deleteTitle{
+#createTitle, #deleteTitle, #viewTitle{
     text-align: center;
 }
 
@@ -109,7 +109,7 @@ td, #tableData {
     
 }
 
-#deleteSchedulesDiv{
+#deleteSchedulesDiv, #viewScheduleByNameDiv{
     float: right;
     width: max-content;
     padding: 20px;
@@ -117,6 +117,11 @@ td, #tableData {
     background-color: #0FC6EC;
     height: 218px;
     margin-top: 0;
+   
+}
+
+#viewScheduleByNameDiv{
+    height: 140px;
 }
 
 #schedulesDiv{
@@ -146,7 +151,7 @@ td, #tableData {
     margin-left: 220px;
 }
 
-#deleteScheduleButton{
+#deleteScheduleButton, #viewScheduleButton{
     margin-left: 300px;
 }
 
@@ -179,4 +184,18 @@ td, #tableData {
 
 #editTitle{
     text-align: center;
+}
+
+#buttonDiv{
+    text-align: center;
+    margin: 0 auto;
+}
+
+#viewSchedulesButton{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #e99898;
+    color: black;
+    
 }

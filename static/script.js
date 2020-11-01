@@ -609,24 +609,51 @@ function makeInputs(){
     document.getElementById('dynamicInputs').appendChild(newSubject);
     document.getElementById('dynamicInputs').appendChild(newCourseNumber);
   }
+  document.getElementById("numberOfCourses").disabled=true;
 }
 
+document.getElementById('viewSchedulesButton').addEventListener('click', getSchedules);
+let numCoursesInSchedule = [];
 //Function to display all of the Schedules in the Database
 function getSchedules() {
+
+  if(schedulesDiv.hasChildNodes){
+    clearSchedulesDiv();
+  }
+
   fetch("/api/schedule").then((res) => {
     res.json().then((data) => {
       console.log(data);
       let schedulesDiv = document.getElementById("schedulesDiv");
       let ol = document.getElementById("orderedList");
       for(let i=0; i<data.length; i++){
+        numCoursesInSchedule.push((data[i].subject_schedule.length)/2);
         let item = document.createElement("li");
-        item.appendChild(document.createTextNode(`${data[i].scheduleName}: ${data[i].subject_schedule}`));
+        item.appendChild(document.createTextNode(`${data[i].scheduleName} - ${numCoursesInSchedule[i]} Courses: ${data[i].subject_schedule}`));
         ol.appendChild(item);
         schedulesDiv.appendChild(ol);
       }
-
+      console.log(numCoursesInSchedule);
     });
   });
+}
+
+document.getElementById("viewScheduleButton").addEventListener('click', viewScheduleByName);
+function viewScheduleByName(){
+
+  fetch(`/api/schedule/${document.getElementById("viewScheduleName").value}`).then((res) => {
+    res.json().then((data) => {
+      console.log(data);
+        let viewScheduleByNameDiv = document.getElementById("viewScheduleByNameDiv");
+        let ul = document.getElementById("viewScheduleList");
+        let item = document.createElement("li");
+        item.appendChild(document.createTextNode(`${data.scheduleName}: ${data.subject_schedule}`));
+        ul.appendChild(item);
+        viewScheduleByNameDiv.appendChild(ul); 
+    });
+  });
+  document.getElementById("viewScheduleName").value = "";
+  document.getElementById("viewScheduleButton").disabled = true;
 }
 
 addScheduleButton.addEventListener("click", addSchedules);
@@ -647,8 +674,7 @@ function addSchedules() {
 
   const newSchedule = {
     scheduleName: document.getElementById("scheduleName").value,
-    subject_schedule: combined_db,
-    //courseNumber_schedule: courseNumber_db,
+    subject_schedule: combined_db
   };
   fetch("/api/schedule", {
     method: "POST",
@@ -676,8 +702,6 @@ function addSchedules() {
     document.getElementById("numberOfCourses").value="";
     document.getElementById("scheduleName").value="";
     
-    
-   
 }
 
 deleteAll.addEventListener('click', deleteSchedules);
@@ -738,25 +762,30 @@ function deleteScheduleByName(){
 });
 };
 
+
+let edited_subjects_db=[];
+let edited_courseNumber_db=[];
+let edited_combined_db=[];
+
 document.getElementById("confirmEdit").addEventListener('click', confirmEdit);
+
 function confirmEdit(){
   let scheduleNames=[];
   let scheduleCourses=[];
-  fetch("/api/schedule")
+  console.log(document.getElementById('editScheduleName').value);
+  fetch(`/api/schedule/${document.getElementById('editScheduleName').value}`)
     .then((res) => {res.json()
     .then((data) => {
-     for(let i=0; i<data.length; i++){
-       scheduleNames.push(data[i].scheduleName);
-       scheduleCourses.push(data[i].subject_schedule);
-     }
-     console.log(scheduleNames);
-     console.log(scheduleCourses);
+       scheduleNames.push(data.scheduleName);
+       scheduleCourses.push(data.subject_schedule);
+      console.log(scheduleCourses);
      let editScheduleInput = document.getElementById("editScheduleName").value;
      console.log(editScheduleInput);
  
       if(scheduleNames.includes(editScheduleInput)){
         console.log("Yes it matches");
-        for(let i=1; i<=scheduleCourses.length; i++){
+
+        for(let i=1; i<=data.subject_schedule.length/2; i++){
           let editSubject = document.createElement("input");
           let editCourseNumber = document.createElement("input");
           editSubject.setAttribute("type", "text");
@@ -777,41 +806,65 @@ function confirmEdit(){
   })
 }
 
+document.getElementById("confirmChanges").addEventListener('click', confirmChanges);
+function confirmChanges(){
+    fetch(`/api/schedule/${document.getElementById('editScheduleName').value}`)
+  .then((res) => {res.json()
+  .then((data) => {
+      for(let i=1; i<=data.subject_schedule.length/2;i++){
+    edited_subjects_db.push(document.getElementById(`edit_subject_schedule${i}`).value);
+    edited_courseNumber_db.push(document.getElementById(`edit_courseNumber_schedule${i}`).value);
+  }
+   edited_combined_db = edited_subjects_db.map((element, index) => [element, edited_courseNumber_db[index]]
+   ).flat();
+  console.log(edited_combined_db);
+  combined_db = edited_combined_db;
+  console.log(combined_db);
+  })
+})
+
+return edited_combined_db;
+
+}
+
 document.getElementById('editScheduleButton').addEventListener('click', editSchedule);
 //Function to Edit Schedule by Name
 function editSchedule(){
-  
+
+  if(schedulesDiv.hasChildNodes){
+    clearSchedulesDiv();
+  }
+
+  confirmChanges();
   const editSchedule = {
-    editScheduleName: document.getElementById("editScheduleName").value,
-    edit_subject_schedule: subjects_db,
-    edit_courseNumber_schedule: courseNumberInput,
+    scheduleName: document.getElementById("editScheduleName").value,
+    subject_schedule: edited_combined_db
   };
 
-  // fetch(`/api/schedule/${editSchedule.editScheduleName}`, {
-  //   method: "PUT",
-  //   body: JSON.stringify(editSchedule),
-  //   headers: { "Content-Type": "application/json" },
-  // })
-  //   .then((res) => {
-  //     if(res.ok){
-  //     res
-  //       .json()
-  //       .then((data) => {
-  //         console.log(data);
-  //         getSchedules();
-  //         //document.getElementById('status').innerText = (`Successfuly added the Schedule`);
-  //       })
-  //       .catch(err=>console.log("Failed to get Json Object"));
-  //     }
-  //     else{
-  //       console.log('Error:', res.status);
-  //       //document.getElementById('status').innerText = (`Failed to add the Schedule`);
-  //     }
-  //   })
-  //   .catch();
+  console.log(editSchedule);
 
-    //document.getElementById("editScheduleName").value="";
-    
+  fetch(`/api/schedule/${document.getElementById('editScheduleName').value}`, {
+    method: "PUT",
+    body: JSON.stringify(editSchedule),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => {
+      if(res.ok){
+      res
+        .json()
+        .then((data) => {
+          console.log(data);
+          getSchedules();
+          //document.getElementById('status').innerText = (`Successfuly added the Schedule`);
+        })
+        .catch(err=>console.log("Failed to get Json Object"));
+      }
+      else{
+        console.log('Error:', res.status);
+        //document.getElementById('status').innerText = (`Failed to add the Schedule`);
+      }
+    })
+    .catch(); 
 }
 
 

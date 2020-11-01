@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const Joi = require('joi');
 app.use("/", express.static("static"));
 app.use(express.json());
 const bodyParser = require("body-parser");
@@ -118,50 +119,37 @@ app.post("/api/schedule", (req, res, next) => {
     courseNums_data.push(data[i].catalog_nbr);
   }
 
-  //  let subjectIndex = subjects_data.findIndex(
-  //   (y) => y == req.body.subject_schedule.toUpperCase()
-  // );
-  // let courseNumberIndex = courseNums_data.findIndex(
-  //   (z) => z == req.body.courseNumber_schedule
-  // );
-
   let schedule = new Schedule(
     {
       scheduleName:req.body.scheduleName,
       subject_schedule: req.body.subject_schedule,
     }
   );
+
     console.log(req.body.scheduleName);
     console.log(req.body.subject_schedule);
-    
-    //  if (subjectIndex !== -1 && courseNumberIndex !== -1) {
+ 
         schedule.save(function (err) {
-        if (err) {
-            return console.error(err);
+        if (err ) {
+              return console.error(err);
             }
         else{
           res.send(req.body);
           console.log('Schedule Created Sucessfully');
           }
       });
-        // }
-
-      // else if (subjectIndex === -1) {
-      // console.log("Invalid Subject. This subject is not offered at Western University");
-      //   }
-
-      // else if (courseNumberIndex === -1) {
-      //   console.log("Invalid Course Number");
-      //     } 
 });
 
 //Creating a Put request to update the Schedule by its Name.
 app.put('/api/schedule/:sched_name', function(req,res,next){
+
   Schedule.findOneAndUpdate({scheduleName: req.params.sched_name},req.body).then(function(){
     Schedule.findOne({scheduleName: req.params.sched_name}).then(function(schedule){
       res.send(schedule);
+
     });
   });
+
 });
 
 //Path to delete all Schedules
