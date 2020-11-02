@@ -1,13 +1,10 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const Joi = require('joi');
-const expressSanitizer = require('express-sanitizer');
 app.use("/", express.static("static"));
 app.use(express.json());
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSanitizer());
 const router = express.Router();
 const port = 3000;
 const mongoose = require("mongoose");
@@ -116,41 +113,140 @@ app.post("/api/schedule", (req, res, next) => {
 
   let subjects_data = [];
   let courseNums_data = [];
+
+
   for (let i = 0; i < data.length; i++) {
     subjects_data.push(data[i].subject);
     courseNums_data.push(data[i].catalog_nbr);
   }
 
-  let schedule = new Schedule(
-    {
-      scheduleName:req.body.scheduleName,
-      subject_schedule: req.body.subject_schedule,
+  let schedule = new Schedule({
+    scheduleName:req.body.scheduleName,
+    subject_schedule: req.body.subject_schedule
+  });
+
+  console.log(req.body.subject_schedule);
+  let onlysubjects = [];
+  let onlyCourseNumber=[];
+  for(let i=0; i<req.body.subject_schedule.length; i++){
+    if(i%2==0){
+     onlysubjects.push(req.body.subject_schedule[i]);
     }
-  );
+    else{
+      onlyCourseNumber.push(req.body.subject_schedule[i]);
+    }
+  }
 
+let onlysubjectsLength = onlysubjects.map(function(word){
+    return word.length
+   });
+   console.log("Line 143");
 
-    console.log(req.body.scheduleName);
-    console.log(req.body.subject_schedule);
+   function subjectsLength(){
+     for(let i=0; i<onlysubjectsLength; i++){
+       if(onlysubjectsLength[i]>=8){
+         return true;
+       }
+     }
+     return false;
+   }
  
-        schedule.save(function (err) {
-        if (err ) {
-              return console.error(err);
-            }
-        else{
-          res.send(req.body);
-          console.log('Schedule Created Sucessfully');
+
+  let matchingSubjectResult = onlysubjects.every(function(val){
+    return subjects_data.indexOf(val)>=0;
+  })
+ 
+  console.log(req.body.scheduleName);
+  console.log(req.body.subject_schedule);
+
+
+  if(!req.body.scheduleName){
+    res.status(400).send("Schedule Name is required");
+  }
+  if(req.body.scheduleName.length>16){
+    res.status(400).send("Schedule Name is too long.");
+  }
+  if(matchingSubjectResult==false){
+    res.status(400).send("Invalid Subject");
+  }
+
+  if(subjectsLength()==true){
+    res.status(400).send("Subject Length is too long");
+  }
+
+  else{
+    schedule.save(function (err) {
+      if (err) {
+            console.error(err.message);
+            res.send(err.message);
           }
-      });
+      else{
+        res.send(req.body);
+        console.log('Schedule Created Sucessfully');
+        }
+    });
+  }
+        
 });
 
 //Creating a Put request to update the Schedule by its Name.
 app.put('/api/schedule/:sched_name', function(req,res,next){
 
+  let subjects_data = [];
+  let courseNums_data = [];
+
+
+  for (let i = 0; i < data.length; i++) {
+    subjects_data.push(data[i].subject);
+    courseNums_data.push(data[i].catalog_nbr);
+  }
+
+    let onlysubjects = [];
+  for(let i=0; i<req.body.subject_schedule.length; i++){
+    if(i%2==0){
+     onlysubjects.push(req.body.subject_schedule[i]);
+    }
+  }
+ 
+  function checkString() {
+    for(let i=0; i<onlysubjects.length; i++){
+      if(typeof onlysubjects[i] != "string") {
+         return false;
+       }
+    }
+    return true;
+   }
+
+
+ let matchingSubjectResult = onlysubjects.every(function(val){
+   return subjects_data.indexOf(val)>=0;
+ })
+ console.log(matchingSubjectResult);
+  
+  if(!req.body.scheduleName){
+    res.status(400).send("Schedule Name is required.");
+  }
+  if(req.body.scheduleName.length>16){
+    res.status(400).send("Schedule Name is too long.");
+  }
+
+  if(matchingSubjectResult==false){
+    res.status(400).send("Invalid Subject Entered. This subject is not offered at Western University");
+  }
+
+  if(checkString()==false){
+
+  }
+
+else{
   Schedule.findOneAndUpdate({scheduleName: req.params.sched_name},req.body).then(function(){
     Schedule.findOne({scheduleName: req.params.sched_name}).then(function(schedule){
       res.send(schedule);
     });
   });
+}
+    
+  
 
 });
 
@@ -163,9 +259,21 @@ app.delete('/api/schedule', (req,res,next)=> {
 
 //Path to Delete Schedule by a Given Name
 app.delete('/api/schedule/:sched_name', (req,res,next)=> {
-   Schedule.findOneAndDelete({scheduleName:req.params.sched_name}).then(function(schedule){
-   res.send(schedule);
-     });
+
+  if(!req.body.scheduleName){
+    res.status(400).send("Schedule Name is required to delete.");
+  }
+  if(req.body.scheduleName.length>16){
+    res.status(400).send("Schedule Name is too long.");
+  }
+
+  else{
+    Schedule.findOneAndDelete({scheduleName:req.params.sched_name}).then(function(schedule){
+      res.send(schedule);
+        }); 
+   
+  }
+
   });
 
 

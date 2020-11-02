@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Joi = require('joi');
 
 //Creating a Schedule Schema and Model
 const SchedulesSchema = new Schema({
