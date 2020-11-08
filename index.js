@@ -3,12 +3,15 @@ const app = express();
 const fs = require("fs");
 app.use("/", express.static("static"));
 app.use(express.json());
+const cors = require('cors');
+app.use(cors());
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 const router = express.Router();
 const port = 3000;
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/schedulesdb");
+const MONGODB_URI = "mongodb+srv://mayanksood100:Pioneer108!@cluster0.8pdze.mongodb.net/<dbname>?retryWrites=true&w=majority";
+mongoose.connect(MONGODB_URI || "mongodb://localhost/schedulesdb");
 mongoose.Promise = global.Promise;
 const Schedule = require("./models/schedules.js");
 
@@ -260,10 +263,11 @@ app.delete('/api/schedule', (req,res,next)=> {
 //Path to Delete Schedule by a Given Name
 app.delete('/api/schedule/:sched_name', (req,res,next)=> {
 
-  if(!req.body.scheduleName){
+  if(!req.body.deleteScheduleName){
     res.status(400).send("Schedule Name is required to delete.");
   }
-  if(req.body.scheduleName.length>16){
+
+  if(req.body.deleteScheduleName.length>16){
     res.status(400).send("Schedule Name is too long.");
   }
 
