@@ -15,6 +15,7 @@ mongoose.connect(MONGODB_URI || "mongodb://localhost/schedulesdb");
 mongoose.Promise = global.Promise;
 const Schedule = require("./models/schedules.js");
 
+
 fs.readFile("./Lab3-timetable-data.json", "utf-8", (err, jsonString) => {
   try {
     data = JSON.parse(jsonString);
@@ -162,7 +163,6 @@ let onlysubjectsLength = onlysubjects.map(function(word){
   console.log(req.body.scheduleName);
   console.log(req.body.subject_schedule);
 
-
   if(!req.body.scheduleName){
     res.status(400).send("Schedule Name is required");
   }
@@ -186,6 +186,8 @@ let onlysubjectsLength = onlysubjects.map(function(word){
       else{
         res.send(req.body);
         console.log('Schedule Created Sucessfully');
+        console.log(req.body.scheduleName);
+      
         }
     });
   }
@@ -248,8 +250,6 @@ else{
     });
   });
 }
-    
-  
 
 });
 
@@ -263,21 +263,9 @@ app.delete('/api/schedule', (req,res,next)=> {
 //Path to Delete Schedule by a Given Name
 app.delete('/api/schedule/:sched_name', (req,res,next)=> {
 
-  if(!req.body.deleteScheduleName){
-    res.status(400).send("Schedule Name is required to delete.");
-  }
-
-  if(req.body.deleteScheduleName.length>16){
-    res.status(400).send("Schedule Name is too long.");
-  }
-
-  else{
     Schedule.findOneAndDelete({scheduleName:req.params.sched_name}).then(function(schedule){
       res.send(schedule);
         }); 
-   
-  }
-
   });
 
 
