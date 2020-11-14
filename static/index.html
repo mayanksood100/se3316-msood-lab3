@@ -1,110 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SE3316 Lab 3</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <title>Se3316MsoodLab4</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-
-    <div id="titleDiv">
-        <h2>Undergraduate  Fall/Winter Academic Timetable 2020/2021</h2>
-    </div>
-
-    <h1>Timetable Search</h1>
-        <br>
-        <br>
-
-        <div id="form">
-            <form>
-                <label for="subject">Search by Subject</label>
-                <input type="text" name="subject" id="subject" placeholder="Subject"><br><br>
-                <label for="courseNumber">Search by Course Number</label>
-                <input type="text" name="courseNumber" id="courseNumber" placeholder="Course Number"><br><br>
-                <label for="courseComponent">Search by Course Component</label>
-                <select name="courseComponent" id="courseComponent">
-                    <option value="">Select Component</option> 
-                    <option value="LEC">LEC</option>
-                    <option value="TUT">TUT</option>
-                    <option value="LAB">LAB</option>
-                  </select>
-                  <br><br>
-            </form>
-            <button id="search">Search Subject</button>
-            <button id="search2">Search Subject+CourseCode</button>
-            <button id="search3">Search All</button>
-            <button id="coursesButton">View All Courses</button>
-        </div>
-
-            <br><br>
-
-            <div id="mainScheduleDiv">
-
-            <div id="createSchedulesDiv">
-                <h1 id="createTitle">Create Schedule</h1><br>
-                <label for="numberofCourses">Enter # of Courses</label>
-                <input type="number" placeholder="Enter Number" id="numberOfCourses" name="numberofCourses">
-                <button id="numberButton"># of Courses</button><br><br>
-                <label for="scheduleName">Enter Schedule Name</label>
-                <input type="text" placeholder="Schedule Name" name="scheduleName" id="scheduleName" ><br><br>
-               
-                <div id="dynamicInputs"></div>
-                <button id="addScheduleButton">Add Schedule</button>
-            </div>
-                
-            <div id="schedulesDiv">
-                <span><h3 id="status"></h3></span>
-                <h2 id="divTitle">List of Schedules</h2>
-                <ol id="orderedList"></ol>
-                <div id="buttonDiv">
-                    <button id="viewSchedulesButton">View Schedules</button>
-                </div>
-               
-            </div>
-           
-                <div id="deleteSchedulesDiv">
-                    <h1 id="deleteTitle">Delete Schedule(s)</h1><br>
-                    <label for="deleteScheduleName">Enter Schedule Name to Delete</label>
-                    <input type="text" placeholder="Schedule Name" id="deleteScheduleName" name="deleteScheduleName"><br><br>
-                    <button id="deleteScheduleButton">Delete Schedule</button><br><br>
-                    <button id="deleteAll">Delete All Schedules</button>
-                    <span><h4 id="deleteStatus"></h4></span>
-                </div>
-            </div>
-
-            <br><br><br>
-
-            <div id="editScheduleDiv">
-            <h1 id="editTitle">Edit Schedule</h1><br>
-            <label for="editScheduleName">Enter Schedule Name to Edit</label>
-            <input type="text" placeholder="Schedule Name" name="editScheduleName" id="editScheduleName">
-            <button id="confirmEdit">Select</button><br><br>
-
-            <div id="editDynamicInputs"></div>
-            <span id="matchStatus"></span>
-            <button id="confirmChanges">Confirm Changes</button>
-            <button id="editScheduleButton">Edit Schedule</button>
-            </div>
-
-
-            <div id="viewScheduleByNameDiv">
-                <h1 id="viewTitle">View Schedule by Name</h1><br>
-                <label for="viewScheduleName">Enter Schedule Name to View</label>
-                <input type="text" placeholder="Schedule Name" id="viewScheduleName" name="viewScheduleName"><br><br>
-                <button id="viewScheduleButton">View Schedule Details</button>
-
-                <ul id="viewScheduleList"></ul>
-            </div>
-
-           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        <div id="introDiv">
-
-        <div id="tableDiv">
-        </div>
-        </div>
-
-    <script defer src="script.js"></script>
-</body>
+  <app-root></app-root>
+<script src="runtime.js" defer></script><script src="polyfills.js" defer></script><script src="styles.js" defer></script><script src="vendor.js" defer></script><script src="main.js" defer></script></body>
 </html>
